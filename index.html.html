@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fazii Design | Ultimate Image Sliders</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background: linear-gradient(45deg, #ff0000, #ff7300, #ffeb00, #47ff00, #00ffee, #2b65ff, #8000ff);
+            background-size: 400% 400%;
+            animation: backgroundAnimation 10s infinite alternate;
+        }
+
+        @keyframes backgroundAnimation {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        h1 {
+            color: white;
+            margin-top: 10px;
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            max-width: 1200px;
+            gap: 30px; 
+            margin-top: 20px;
+        }
+
+        .section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .section h2 {
+            color: white;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .cube, .carousel, .slider {
+            width: 250px;
+            height: 250px;
+            border-radius: 10px;
+        }
+
+        /* 3D Cube */
+        .cube {
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1s ease-in-out;
+        }
+
+        .cube div {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+        }
+
+        .cube div:nth-child(1) { transform: rotateY(0deg) translateZ(125px); }
+        .cube div:nth-child(2) { transform: rotateY(90deg) translateZ(125px); }
+        .cube div:nth-child(3) { transform: rotateY(180deg) translateZ(125px); }
+        .cube div:nth-child(4) { transform: rotateY(270deg) translateZ(125px); }
+
+        /* 3D Carousel */
+        .carousel {
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1s ease-in-out;
+        }
+
+        .carousel img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .carousel img:nth-child(1) { transform: rotateY(0deg) translateZ(125px); }
+        .carousel img:nth-child(2) { transform: rotateY(72deg) translateZ(125px); }
+        .carousel img:nth-child(3) { transform: rotateY(144deg) translateZ(125px); }
+        .carousel img:nth-child(4) { transform: rotateY(216deg) translateZ(125px); }
+        .carousel img:nth-child(5) { transform: rotateY(288deg) translateZ(125px); }
+
+        /* Image Slider */
+        .slider {
+            overflow: hidden;
+        }
+
+        .images {
+            display: flex;
+            width: 500%;
+            transition: transform 1s ease-in-out;
+        }
+
+        .images img {
+            width: 250px;
+            height: 250px;
+            border-radius: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Fazii Design - Ultimate Image Sliders</h1>
+    <div class="container">
+        <!-- 3D Cube -->
+        <div class="section">
+            <h2>3D Cube</h2>
+            <div class="cube" id="cube">
+                <div style="background-image: url('https://picsum.photos/250?random=6');"></div>
+                <div style="background-image: url('https://picsum.photos/250?random=7');"></div>
+                <div style="background-image: url('https://picsum.photos/250?random=8');"></div>
+                <div style="background-image: url('https://picsum.photos/250?random=9');"></div>
+            </div>
+        </div>
+
+        <!-- 3D Carousel -->
+        <div class="section">
+            <h2>3D Carousel</h2>
+            <div class="carousel" id="carousel">
+                <img src="https://picsum.photos/250?random=1">
+                <img src="https://picsum.photos/250?random=2">
+                <img src="https://picsum.photos/250?random=3">
+                <img src="https://picsum.photos/250?random=4">
+                <img src="https://picsum.photos/250?random=5">
+            </div>
+        </div>
+
+        <!-- Image Slider -->
+        <div class="section">
+            <h2>Image Slider</h2>
+            <div class="slider">
+                <div class="images" id="imageContainer">
+                    <img src="https://picsum.photos/250?random=10">
+                    <img src="https://picsum.photos/250?random=11">
+                    <img src="https://picsum.photos/250?random=12">
+                    <img src="https://picsum.photos/250?random=13">
+                    <img src="https://picsum.photos/250?random=14">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let carouselAngle = 0;
+        let cubeAngle = 0;
+        let sliderIndex = 0;
+        const totalSlides = 5;
+        const sliderContainer = document.getElementById('imageContainer');
+
+        function rotateCarousel() {
+            carouselAngle += 72;
+            document.getElementById("carousel").style.transform = `rotateY(${carouselAngle}deg)`;
+        }
+
+        function rotateCube() {
+            cubeAngle += 90;
+            document.getElementById("cube").style.transform = `rotateY(${cubeAngle}deg)`;
+        }
+
+        function nextSlide() {
+            sliderIndex = (sliderIndex + 1) % totalSlides;
+            sliderContainer.style.transform = `translateX(${-sliderIndex * 250}px)`;
+        }
+
+        setInterval(rotateCarousel, 3000);
+        setInterval(rotateCube, 3000);
+        setInterval(nextSlide, 3000);
+    </script>
+</body>
+</html>
